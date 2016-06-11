@@ -1,5 +1,8 @@
 package com.kaishengit.dbutils;
 
+import com.kaishengit.dao.UserDao;
+import com.kaishengit.exception.DataAccessException;
+import com.mysql.fabric.xmlrpc.base.Data;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -18,83 +21,44 @@ import java.util.Map;
 public class UtilsTest {
 
 
+    UserDao<User> userDao = new UserDao<>();
     @Test
     public void insertTest(){
-        QueryRunner queryRunner = new QueryRunner();
         String sql ="insert into `user`(name,password) values(?,?)";
-        try {
-            queryRunner.update(ConnManager.getConnection(),sql,"Tom","123");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userDao.updateUser(sql,"Lucy","123");
+
     }
 
     @Test
     public void updateTest(){
-        QueryRunner queryRunner=new QueryRunner();
         String sql = "update `user` set name=? where id = ?";
-        Connection connection = ConnManager.getConnection();
-        try {
-            queryRunner.update(connection,sql,"Jim",3);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userDao.updateUser(sql,"Jack",5);
     }
 
     @Test
     public void deleteTest(){
-        QueryRunner queryRunner = new QueryRunner();
         String sql = "delete from `user` where id=?";
-        Connection connection =ConnManager.getConnection();
-        try {
-            queryRunner.update(connection,sql,2);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        userDao.updateUser(sql,4);
     }
 
     @Test
     public void beanTest(){
-        QueryRunner queryRunner = new QueryRunner();
         String sql = "select * from `user` where id = ?";
-        Connection connection = ConnManager.getConnection();
-        User user=null;
-        try {
-            user= queryRunner.query(connection,sql, new BeanHandler<>(User.class),1);
-            System.out.println(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        System.out.println(userDao.queryUser(sql,new BeanHandler(User.class),5));
     }
 
     @Test
     public void testBeanList(){
         QueryRunner queryRunner = new QueryRunner();
-        Connection connection = ConnManager.getConnection();
+        Connection connection = ConnectionManager.getConnection();
         String sql = "select * from `user`";
         List<User> list=null;
         try {
              list= queryRunner.query(connection,sql,new BeanListHandler<>(User.class));
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("选择用户异常！",e);
         }finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConnectionManager.close(connection);
         }
         for(User user: list){
             System.out.println(user);
@@ -104,7 +68,7 @@ public class UtilsTest {
     @Test
     public void mapHandlerTest(){
         QueryRunner queryRunner = new QueryRunner();
-        Connection connection = ConnManager.getConnection();
+        Connection connection = ConnectionManager.getConnection();
         String sql = "select * from `user` where id= ?";
         try {
             Map<String , Object> user =  queryRunner.query(connection,sql,new MapHandler(),1);
@@ -112,11 +76,7 @@ public class UtilsTest {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConnectionManager.close(connection);
         }
     }
 
@@ -124,7 +84,7 @@ public class UtilsTest {
     @Test
     public void mapListHandlerTest(){
         QueryRunner queryRunner = new QueryRunner();
-        Connection connection = ConnManager.getConnection();
+        Connection connection = ConnectionManager.getConnection();
         String sql = "select * from `user`";
         try {
             List<Map<String ,Object>> userList = queryRunner.query(connection,sql,new MapListHandler());
@@ -134,13 +94,9 @@ public class UtilsTest {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("挑选用户失败！",e);
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConnectionManager.close(connection);
         }
     }
 

@@ -1,5 +1,7 @@
 package com.kaishengit.dbutils;
 
+import com.kaishengit.exception.DataAccessException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,7 +9,7 @@ import java.sql.SQLException;
 /**
  * Created by Administrator on 2016/6/8.
  */
-public class ConnManager {
+public class ConnectionManager {
 
 
     public static Connection getConnection() {
@@ -17,11 +19,17 @@ public class ConnManager {
             connection = DriverManager.getConnection("jdbc:mysql:///mydb", "root", "root");
             return connection;
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new DataAccessException("加载数据库驱动异常",e);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("获取数据库连接异常",e);
         }
+    }
 
-        return null;
+    public static void close(Connection connection){
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new DataAccessException("数据库连接关闭异常",e);
+        }
     }
 }
