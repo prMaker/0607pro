@@ -1,4 +1,4 @@
-package com.kaishengit.dbutils;
+package com.kaishengit.entity;
 
 /**
  * Created by Administrator on 2016/6/8.
@@ -8,6 +8,14 @@ public class User {
     private Integer id;
     private String name;
     private String password;
+
+    public User(Integer id,String name , String password){
+        this.password = password;
+        this.id= id;
+        this.name = name ;
+    }
+
+    public User(){}
 
     @Override
     public String toString() {
