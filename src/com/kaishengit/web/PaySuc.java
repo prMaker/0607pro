@@ -8,13 +8,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Administrator on 2016/6/7.
+ * Created by Administrator on 2016/6/13.
  */
-@WebServlet
-public class MyServlet extends HttpServlet {
+@WebServlet("/paysuc")
+public class PaySuc extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/paysuc.jsp").forward(req,resp);
     }
 }
