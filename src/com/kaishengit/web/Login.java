@@ -1,5 +1,8 @@
 package com.kaishengit.web;
 
+import com.kaishengit.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,10 +26,12 @@ public class Login extends HttpServlet {
         String name = req.getParameter("name");
         String password = req.getParameter("password");
         String captcha = req.getParameter("captcha");
-
         String sessionCaptcha = (String) req.getSession().getAttribute("captcha");
+        UserService userService = new UserService();
         if(captcha!=null&&captcha.equals(sessionCaptcha)){
-            resp.sendRedirect("/WEB-INF/viess/paysuc.jsp");
+            if(userService.login(name,password)!=null){
+                resp.sendRedirect("/WEB-INF/viess/loginsuc.jsp");
+            }
         }else{
             resp.sendRedirect("/login?error=1001");
         }

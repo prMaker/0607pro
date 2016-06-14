@@ -37,42 +37,20 @@ public class UserDao {
     }
 
 
-    @Test
     public User findById(Integer id){
         String sql = "select * from `user` where id=?";
-
-
-//        Connection connection = ConnectionManager.getConnection();
-//        QueryRunner queryRunner = new QueryRunner();
-//        try {
-//            User user = queryRunner.query(connection,sql,new BeanHandler<>(User.class),id);
-//            System.out.println(user);
-//        } catch (SQLException e) {
-//            throw new DataAccessException("执行"+sql+"异常",e);
-//        }
-
         User user = dbHelper.queryUser(sql,new BeanHandler<>(User.class),id);
         System.out.println(user);
         return user;
     }
 
+    public User findByName(String name){
+        String sql = "select * from `user` where name = ?";
+        return dbHelper.queryUser(sql, new BeanHandler<>(User.class), name);
+    }
 
     public List<User> findAll(){
         String sql = "select * from `user`";
-
-
-//        Connection connection = ConnectionManager.getConnection();
-//        QueryRunner queryRunner = new QueryRunner();
-//        try {
-//            List<User> list = queryRunner.query(connection,sql,new BeanListHandler<>(User.class));
-//            Iterator iterator = list.iterator();
-//            while (iterator.hasNext()){
-//                System.out.println(iterator.next());
-//            }
-//        } catch (SQLException e) {
-//            throw new DataAccessException("执行"+sql+"出错",e);
-//        }
-
         List<User> list = dbHelper.queryUser(sql,new BeanListHandler<>(User.class));
         for(User user : list){
             System.out.println(user);

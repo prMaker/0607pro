@@ -33,9 +33,11 @@ public class PayTest extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String money = req.getParameter("money");
         String token =  req.getParameter("token");
         String sessionToken = (String) req.getSession().getAttribute("token");
         logger.debug("sessionToken:{}",sessionToken);
+        logger.info("成功付款{}",money);
         if(token!=null&&token.equals(sessionToken)){
             req.getSession().removeAttribute("token");
             req.getRequestDispatcher("/WEB-INF/views/paysuc.jsp").forward(req,resp);

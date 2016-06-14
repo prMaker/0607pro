@@ -12,20 +12,30 @@
 </head>
 <body>
 
-<form action="/login" method="post">
+<form action="/login" method="post" id="loginForm">
     用户名：<input type="text" name="name"><br><br>
-    密码：&nbsp;<input type="password" name="password"><br><br>
+    密码：&nbsp;<input type="password" name="password" id="password"><br><br>
     验证码：<input type="text" name="captcha"><br><br>
     <a href="javascript:;" id="capt"><img src="/captcha.png" id="captcha" alt=""></a>
-    <button type="submit">登录</button>
+    <button type="button" id="submitBtn">登录</button>
 </form>
 
 <script src="/static/js/jquery-3.0.0.min.js"></script>
+<script src="/static/js/cryptojs/core-min.js"></script>
+<script src="/static/js/cryptojs/md5-min.js"></script>
 <script>
 
     $(function(){
         $("a").click(function(){
             $("#captcha").attr("src","/captcha.png?id="+new Date().getTime());
+        });
+        $("#submitBtn").click(function(){
+            var password =$("#password").val();
+            password = CryptoJS.MD5(password);
+            $("#password").val(password);
+            console.log(password.toString());
+
+            $("#loginForm").submit();
         });
     });
 
