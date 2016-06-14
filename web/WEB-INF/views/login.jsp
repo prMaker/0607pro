@@ -16,9 +16,19 @@
     用户名：<input type="text" name="name"><br><br>
     密码：&nbsp;<input type="password" name="password"><br><br>
     验证码：<input type="text" name="captcha"><br><br>
-    <img src="/captcha.png" id="captcha" alt="">
+    <a href="javascript:;" id="capt"><img src="/captcha.png" id="captcha" alt=""></a>
     <button type="submit">登录</button>
 </form>
 
+<script src="/static/js/jquery-3.0.0.min.js"></script>
+<script>
+
+    $(function(){
+        $("a").click(function(){
+            $("#captcha").attr("src","/captcha.png?id="+new Date().getTime());
+        });
+    });
+
+</script>
 </body>
 </html>
