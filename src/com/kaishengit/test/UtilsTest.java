@@ -52,7 +52,7 @@ public class UtilsTest {
 
     @Test
     public void findByIdMapTest(){
-        Integer id = 7;
+        Integer id = 6;
         userDao.findByIdMap(id);
     }
 

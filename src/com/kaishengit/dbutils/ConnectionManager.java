@@ -1,9 +1,9 @@
 package com.kaishengit.dbutils;
 
 import com.kaishengit.exception.DataAccessException;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
@@ -12,21 +12,34 @@ import java.sql.SQLException;
 public class ConnectionManager {
 
 
+    private static BasicDataSource dataSource = new BasicDataSource();
+
     static {
+        dataSource.setDriverClassName(Config.get("jdbc.driver"));
+        dataSource.setUrl(Config.get("jdbc.url"));
+        dataSource.setUsername(Config.get("jdbc.username"));
+        dataSource.setPassword(Config.get("jdbc.password"));
+
+        dataSource.setInitialSize(Integer.parseInt(Config.get("jdbc.initsize")));
+        dataSource.setMaxTotal(Integer.parseInt(Config.get("jdbc.maxsize")));
+        dataSource.setMinIdle(Integer.parseInt(Config.get("jdbc.minidle")));
+        dataSource.setMaxIdle(Integer.parseInt(Config.get("jdbc.maxidle")));
+        dataSource.setMaxWaitMillis(new Long(Config.get("jdbc.waitmillis")));
 
     }
 
+    public static BasicDataSource getDataSource(){
+        return dataSource;
+    }
+
     public static Connection getConnection() {
-        Connection connection = null;
+        Connection connection;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql:///mydb", "root", "root");
-            return connection;
-        } catch (ClassNotFoundException e) {
-            throw new DataAccessException("加载数据库驱动异常",e);
+            connection = dataSource.getConnection();
         } catch (SQLException e) {
-            throw new DataAccessException("获取数据库连接异常",e);
+            throw new RuntimeException("连接连接池异常",e);
         }
+        return connection;
     }
 
     public static void close(Connection connection){

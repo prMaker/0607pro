@@ -31,6 +31,8 @@ public class Login extends HttpServlet {
         if(captcha!=null&&captcha.equals(sessionCaptcha)){
             if(userService.login(name,password)!=null){
                 resp.sendRedirect("/WEB-INF/viess/loginsuc.jsp");
+            }else{
+                resp.sendRedirect("/login?error=1002");
             }
         }else{
             resp.sendRedirect("/login?error=1001");

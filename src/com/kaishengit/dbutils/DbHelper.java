@@ -14,26 +14,20 @@ import java.sql.SQLException;
 public class DbHelper {
 
     public void updateUser(String sql,Object...params){
-        QueryRunner queryRunner = new QueryRunner();
-        Connection connection = ConnectionManager.getConnection();
+        QueryRunner queryRunner = new QueryRunner(ConnectionManager.getDataSource());
         try {
-            queryRunner.update(connection,sql,params);
+            queryRunner.update(sql,params);
         } catch (SQLException e) {
             throw new DataAccessException("执行"+sql+"异常",e);
-        } finally {
-            ConnectionManager.close(connection);
         }
     }
 
     public static <T> T queryUser(String sql , ResultSetHandler<T> rsh, Object...params) {
-        QueryRunner queryRunner = new QueryRunner();
-        Connection connection = ConnectionManager.getConnection();
+        QueryRunner queryRunner = new QueryRunner(ConnectionManager.getDataSource());
         try {
-            return (T) queryRunner.query(connection, sql, rsh, params);
+            return (T) queryRunner.query(sql, rsh, params);
         } catch (SQLException e) {
             throw new DataAccessException("执行"+sql+"异常", e);
-        } finally {
-            ConnectionManager.close(connection);
         }
     }
 }
