@@ -8,23 +8,24 @@ public class User {
     private Integer id;
     private String name;
     private String password;
+    private String adress;
 
-    public User(Integer id,String name , String password){
+    public User(Integer id, String name , String password, String adress){
         this.password = password;
+        this.adress = adress;
         this.id= id;
         this.name = name ;
     }
 
-    public User(){}
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public String getAdress() {
+        return adress;
     }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
+
+    public User(){}
 
     public Integer getId() {
         return id;

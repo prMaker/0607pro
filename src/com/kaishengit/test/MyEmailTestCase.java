@@ -1,5 +1,6 @@
 package com.kaishengit.test;
 
+import com.kaishengit.dbutils.EmailUtil;
 import org.apache.commons.mail.*;
 import org.junit.Test;
 
@@ -71,5 +72,10 @@ public class MyEmailTestCase {
         } catch (EmailException e) {
             throw new RuntimeException("发送错误",e);
         }
+    }
+
+    @Test
+    public void emailUtilTest(){
+        EmailUtil.sendEmail("登录提醒","<h2>您的账号在我网站登录</h2>","734520467@qq.com");
     }
 }

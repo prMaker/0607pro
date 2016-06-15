@@ -1,10 +1,9 @@
 package com.kaishengit.service;
 
 import com.kaishengit.dao.UserDao;
+import com.kaishengit.dbutils.EmailUtil;
 import com.kaishengit.entity.User;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.mail.Email;
-import org.apache.commons.mail.HtmlEmail;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,36 +16,33 @@ import org.slf4j.LoggerFactory;
  */
 public class UserService {
 
-    private Logger logger = LoggerFactory.getLogger(UserService.class);
-    private UserDao userDao = new UserDao();
+
+    private static Logger logger = LoggerFactory.getLogger(UserService.class);
+    private static UserDao userDao = new UserDao();
+    private static final String SALT = "sdfsadfsadfjslkc544";
 
     /**
      * 用户登录进行操作
-     * @param name 用户名
+     *
+     * @param name     用户名
      * @param password 用户密码
      * @return user对象
      */
-    public User login(String name , String password){
-        User user = userDao.findByName(name);
-        if(user!=null&&user.getPassword().equals(password)){
-
-            logger.info("{}登录系统",user.getName());
-            HtmlEmail htmlEmail = new HtmlEmail();
-            htmlEmail.setHostName("smtp.163.com");
-            htmlEmail.setSmtpPort(25);
-            htmlEmail.setCharset("UTF-8");
-            htmlEmail.setAuthentication("prmaker","y1593812");
-
-            htmlEmail.setFrom("prmaker@163.com");
-            htmlEmail.setSubject("登录提醒");
-            htmlEmail.setMsg("登录系统");
-
+    public User login(final String name, String password) {
+        final User user = userDao.findByName(name);
+//        password = DigestUtils.md5Hex(password);
+        if (user != null && user.getPassword().equals(password)) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    EmailUtil.sendEmail("登录提醒", "<h3>您的账号" + name + "在" + DateTime.now().toString("yyyy-MM-dd HH-mm-ss") + "登陆了系统</h3>", user.getAdress());
+                }
+            }).start();
+            logger.info("{}登陆了系统", name);
             return user;
         }
         return null;
     }
-
-
 
 
 }

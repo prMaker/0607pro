@@ -12,6 +12,10 @@ import java.sql.SQLException;
 public class ConnectionManager {
 
 
+    static {
+
+    }
+
     public static Connection getConnection() {
         Connection connection = null;
         try {
