@@ -1,19 +1,17 @@
 package com.kaishengit.dbutils;
 
-import com.kaishengit.dbutils.ConnectionManager;
 import com.kaishengit.exception.DataAccessException;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
  * Created by Administrator on 2016/6/9.
  */
-public class DbHelper {
+public class DbHelp {
 
-    public void updateUser(String sql,Object...params){
+    public static void updateUser(String sql,Object...params){
         QueryRunner queryRunner = new QueryRunner(ConnectionManager.getDataSource());
         try {
             queryRunner.update(sql,params);

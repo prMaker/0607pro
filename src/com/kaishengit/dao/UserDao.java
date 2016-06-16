@@ -1,17 +1,9 @@
 package com.kaishengit.dao;
 
-import com.kaishengit.dbutils.ConnectionManager;
-import com.kaishengit.dbutils.DbHelper;
+import com.kaishengit.dbutils.DbHelp;
 import com.kaishengit.entity.User;
-import com.kaishengit.exception.DataAccessException;
-import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.*;
-import org.junit.Test;
 
-import javax.management.Query;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,70 +12,72 @@ import java.util.Map;
  */
 public class UserDao {
 
-    DbHelper dbHelper = new DbHelper();
-    public void insertUser(String name,String password){
+    DbHelp dbHelper = new DbHelp();
+
+    public void insertUser(String name, String password) {
         String sql = "insert into `user` (name,password) value (?,?);";
-        dbHelper.updateUser(sql,name,password);
+        dbHelper.updateUser(sql, name, password);
     }
 
-    public void updateUser(String name ,String password){
+    public void updateUser(String name, String password) {
         String sql = "update `user` set password = ? where name = ?";
-        dbHelper.updateUser(sql,password,name);
+        dbHelper.updateUser(sql, password, name);
     }
 
-    public void deleteUserById(Integer id){
+    public void deleteUserById(Integer id) {
         String sql = "delete from `user` where id = ?";
-        dbHelper.updateUser(sql,id);
+        dbHelper.updateUser(sql, id);
     }
 
 
-    public User findById(Integer id){
+    public User findById(Integer id) {
         String sql = "select * from `user` where id=?";
-        User user = dbHelper.queryUser(sql,new BeanHandler<>(User.class),id);
+        User user = dbHelper.queryUser(sql, new BeanHandler<>(User.class), id);
         System.out.println(user);
         return user;
     }
 
-    public User findByName(String name){
+    public User findByName(String name) {
         String sql = "select * from `user` where name = ?";
         return dbHelper.queryUser(sql, new BeanHandler<>(User.class), name);
     }
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         String sql = "select * from `user`";
-        List<User> list = dbHelper.queryUser(sql,new BeanListHandler<>(User.class));
-        for(User user : list){
+        List<User> list = dbHelper.queryUser(sql, new BeanListHandler<>(User.class));
+        for (User user : list) {
             System.out.println(user);
         }
         return list;
     }
 
-    public Map<String,Object> findByIdMap(Integer id){
+    public Map<String, Object> findByIdMap(Integer id) {
         String sql = "select * from `user` where id = ?";
-        Map<String,Object> map  = dbHelper.queryUser(sql,new MapHandler(),id);
-        for(Map.Entry<String,Object> entry : map.entrySet()){
-            System.out.println(entry.getKey()+":"+entry.getValue());
+        Map<String, Object> map = dbHelper.queryUser(sql, new MapHandler(), id);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + ":" + entry.getValue());
         }
         return map;
     }
 
-    public List<Map<String,Object>> findAllMapList(){
+    public List<Map<String, Object>> findAllMapList() {
         String sql = "select * from `user`";
-        List<Map<String,Object>> resultList = dbHelper.queryUser(sql,new MapListHandler());
-        for(int i = 0;i<resultList.size();i++){
-        for(Map.Entry<String,Object> entry : resultList.get(i).entrySet()){
-            System.out.println(entry.getKey()+":"+entry.getValue());
-        }}
+        List<Map<String, Object>> resultList = dbHelper.queryUser(sql, new MapListHandler());
+        for (int i = 0; i < resultList.size(); i++) {
+            for (Map.Entry<String, Object> entry : resultList.get(i).entrySet()) {
+                System.out.println(entry.getKey() + ":" + entry.getValue());
+            }
+        }
         return resultList;
     }
 
-    public Long countUser(){
+    public Long countUser() {
         String sql = "select count(*) from `user`";
-        return dbHelper.queryUser(sql,new ScalarHandler<Long>());
+        return dbHelper.queryUser(sql, new ScalarHandler<Long>());
     }
 
-    public List<String> nameList(){
+    public List<String> nameList() {
         String sql = "select name from `user`";
-        return dbHelper.queryUser(sql,new ColumnListHandler<String>());
+        return dbHelper.queryUser(sql, new ColumnListHandler<String>());
     }
 }
