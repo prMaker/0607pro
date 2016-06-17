@@ -1,13 +1,14 @@
 package com.kaishengit.service;
 
 import com.kaishengit.dao.DocumentDao;
+import com.kaishengit.dao.UserDao;
 import com.kaishengit.dbutils.ByteCountToDisplaySize;
 import com.kaishengit.entity.Document;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -53,5 +54,18 @@ public class DocumentService {
         byteArrayInputStream.close();
         fileOutputStream.close();
         return fileName;
+    }
+
+
+    DocumentDao documentDao = new DocumentDao();
+    public List<Document> getDocumentAll() {
+        return documentDao.queryAll();
+
+    }
+
+    public Document getDocumentByMd5(String md5) {
+
+        return documentDao.queryByMd5(md5);
+
     }
 }

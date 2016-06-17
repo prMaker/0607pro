@@ -14,12 +14,12 @@ public class ByteCountToDisplaySize {
             return String.valueOf(size)+"B";
         }
 
-        if(new Double(size)/1024>=1){
+        if(new Double(size)/1024>=1&&new Double(size)/1024<1024){
             System.out.println(String.valueOf(size/1024)+"KB");
             return String.valueOf(new Double(size)/1024)+"KB";
         }
 
-        if(new Double(size)/(1024*1024)>=1){
+        if(new Double(size)/(1024*1024)>=1&&new Double(size)/(1024*1024)<=1024){
             return String.valueOf(new Double(size)/(1024*1024))+"MB";
         }
 

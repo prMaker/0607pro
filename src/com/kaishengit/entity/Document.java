@@ -13,6 +13,31 @@ public class Document {
     private String displaySize;
     private String md5;
 
+    @Override
+    public String toString() {
+        return "Document{" +
+                "id=" + id +
+                ", fileName='" + fileName + '\'' +
+                ", saveName='" + saveName + '\'' +
+                ", extName='" + extName + '\'' +
+                ", size=" + size +
+                ", displaySize='" + displaySize + '\'' +
+                ", md5='" + md5 + '\'' +
+                '}';
+    }
+
+    public boolean isPreview(){
+
+        if(getFileName().endsWith(".gif")||getFileName().endsWith(".png")
+                ||getFileName().endsWith(".jpg")
+                ||getFileName().endsWith(".jpeg")
+                ||getFileName().endsWith(".pdf")
+                ||getFileName().endsWith(".pdf")
+                ||getFileName().endsWith(".bmf")){
+            return true;
+        }
+        return false;
+    }
 
     public Integer getId() {
         return id;

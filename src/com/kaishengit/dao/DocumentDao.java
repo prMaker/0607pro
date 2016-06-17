@@ -3,6 +3,9 @@ package com.kaishengit.dao;
 import com.kaishengit.dbutils.DbHelp;
 import com.kaishengit.entity.Document;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/6/16.
@@ -15,8 +18,14 @@ public class DocumentDao {
     }
 
     public Document queryByMd5(String md5) {
-        String sql = "SELECT 1 FROM t_document WHERE md5 = ?";
+        String sql = "SELECT * FROM t_document WHERE md5 = ?";
         return DbHelp.queryUser(sql,new BeanHandler<>(Document.class),md5);
     }
 
+    public List<Document> queryAll() {
+
+        String sql = "SELECT * FROM t_document ORDER BY id DESC ";
+        return DbHelp.queryUser(sql,new BeanListHandler<>(Document.class));
+
+    }
 }

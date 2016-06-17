@@ -15,7 +15,7 @@
 
     <div class="container">
 
-        <form action="/upload" method="post" enctype="multipart/form-data">
+        <form action="/uploadcommons" method="post" enctype="multipart/form-data">
             <label>文件描述:</label>
             <input type="text" class="form" name="desc"><br/><br/>
             <label>请选择文件:</label>
